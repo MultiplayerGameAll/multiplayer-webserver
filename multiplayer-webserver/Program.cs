@@ -19,8 +19,31 @@ namespace multiplayer_webserver
             ws.Stop();
         }
 
+        public static string GetRequestPostData(HttpListenerRequest request)
+        {
+            if (!request.HasEntityBody)
+            {
+                return null;
+            }
+            using (System.IO.Stream body = request.InputStream) // here we have data
+            {
+                using (System.IO.StreamReader reader = new System.IO.StreamReader(body, request.ContentEncoding))
+                {
+                    return reader.ReadToEnd();
+                }
+            }
+        }
+
         public static string SendResponse(HttpListenerRequest request)
         {
+            string jsonReq = GetRequestPostData(request);
+            if(jsonReq != null)
+            {
+                Card cartaReq = JsonConvert.DeserializeObject<Card>(jsonReq);
+                Console.WriteLine(cartaReq.tipoCarta);
+                Console.WriteLine(cartaReq.energia);
+            }
+
             Card carta = new Card();
             carta.tipoCarta = "Magia";
             carta.energia = 3;
