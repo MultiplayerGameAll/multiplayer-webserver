@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -20,7 +21,14 @@ namespace multiplayer_webserver
 
         public static string SendResponse(HttpListenerRequest request)
         {
-            return string.Format("<HTML><BODY>My web page.<br>{0}</BODY></HTML>", DateTime.Now);
+            Card carta = new Card();
+            carta.tipoCarta = "Magia";
+            carta.energia = 3;
+            carta.ataque = 2;
+
+            string json = JsonConvert.SerializeObject(carta);
+            return json;
+            //return string.Format("<HTML><BODY>My web page.<br>{0}</BODY></HTML>", DateTime.Now);
         }
     }
 }
